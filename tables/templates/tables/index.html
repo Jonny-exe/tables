@@ -1,6 +1,73 @@
-<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
-    src="https://www.openstreetmap.org/export/embed.html?bbox=-5.27618408203125%2C41.419559770498026%2C-4.180297851562501%2C41.887965758804484&amp;layer=mapnik&amp;marker=41.65418855213648%2C-4.728240966796875"
-    style="border: 1px solid black"></iframe><br /><small><a
-        href="https://www.openstreetmap.org/?mlat=41.6542&amp;mlon=-4.7282#map=11/41.6542/-4.7282">View Larger
-        Map</a></small>
-https://www.openstreetmap.org/?mlat=41.6542&amp;mlon=-4.7282#map=11/41.6542/-4.7282
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+    integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+    crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+    crossorigin=""></script>
+
+<style>
+    .coordinate-item {
+        /* box-shadow: 0px 0px 7px 2px black; */
+        border: 2px solid black;
+        border-radius: 3px;
+        margin: 1%;
+        text-align: center;
+
+    }
+
+    .coordinate-items-container {
+        margin: 1%;
+        padding: 1%;
+        padding-top: 0%;
+        border-right: 3px solid black;
+        display: flex;
+        flex-direction: column;
+        width: 500px
+    }
+
+    #map {
+        height: 500px;
+        width: 600px
+    }
+</style>
+
+<div x-data="{ open: false, data: {{coordinates}} }" style="display: flex">
+    <div class="coordinate-items-container">
+        <template x-for="a in $store.coordinates.data">
+            <div @click="onMapClick({latlng: {lat: a[0], lng: a[1]}})" class="coordinate-item">
+                <h2 x-text="a"></h2>
+            </div>
+        </template>
+    </div>
+
+    <div id="map"></div>
+</div>
+{% autoescape off %}
+<script>
+    console.log("")
+    var coordinates = { data: {{ coordinates }}}
+    console.log(coordinates)
+    document.addEventListener('alpine:init', () => {
+        Alpine.store('coordinates', coordinates)
+    })
+
+    var map = L.map('map').setView(coordinates.data[0], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    for (let coordinate of coordinates.data) {
+        console.log("coor: ", coordinate)
+        L.marker(coordinate).addTo(map)
+    }
+
+    function onMapClick(e) {
+        console.log(e)
+        map.setView(e.latlng)
+    }
+
+    map.on('click', onMapClick);
+
+</script>
+<script src="//unpkg.com/alpinejs" defer></script>
+{% endautoescape %}
