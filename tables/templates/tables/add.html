@@ -1,0 +1,47 @@
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+    integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+    crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+    crossorigin=""></script>
+<script src="//unpkg.com/alpinejs" defer></script>
+
+<h2>Add a new table:</h2>
+<h3>Select the position of the table in the map</h3>
+
+
+
+<div id="map" style="height: 500px;"></div>
+
+<form method="POST" x-data="{}" action="{% url 'index' %}" >
+    <input type="hidden" name="lat" x-bind:value="$store.coordinates.lat"></input>
+    <input type="hidden" name="lng" x-bind:value="$store.coordinates.lng"></input>
+    <strong x-text="$store.coordinates.lng"></strong>
+    <strong x-text="$store.coordinates.lat"></strong>
+    <button type="submit">Submit</button>
+    {% csrf_token %}
+</form>
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.store("coordinates", {
+            lat: 40.463667,
+            lng: -3.74922
+        })
+        console.log("set")
+    })
+    var map = L.map('map').setView([40.463667, -3.74922], 4)
+    var marker = L.marker([40.463667, -3.74922]).addTo(map)
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    function onMapClick(e) {
+        Alpine.store('coordinates', e.latlng)
+        console.log(e.latlng)
+        marker.setLatLng(e.latlng);
+    }
+
+    map.on('click', onMapClick);
+
+</script>
