@@ -7,7 +7,6 @@ def index(request):
     if request.method == "POST":
         print(request.POST)
         Table.objects.create(lat=request.POST["lat"], lng=request.POST["lng"])
-        print(redirect('/', permanent=True))
         return redirect('/', permanent=True) # To avoid inserting the same item twice when doing F5
 
     print(Table.objects.all())

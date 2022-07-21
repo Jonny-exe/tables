@@ -1,0 +1,25 @@
+.coordinate-item {
+    /* box-shadow: 0px 0px 7px 2px black; */
+    border: 2px solid black;
+    border-radius: 3px;
+    margin: 1%;
+    text-align: center;
+
+}
+
+.coordinate-items-container {
+    margin: 1%;
+    padding: 1%;
+    padding-top: 0%;
+    border-right: 3px solid black;
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+#map {
+    height: 500px;
+    width: 600px
+}

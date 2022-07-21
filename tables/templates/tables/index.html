@@ -1,38 +1,6 @@
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
-    integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
-    crossorigin="" />
-<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
-    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
-    crossorigin=""></script>
+{% load static %}   
+<link rel="stylesheet" type="text/css" href="{% static 'tables/style.css' %}">
 <script src="//unpkg.com/alpinejs" defer></script>
-<style>
-    .coordinate-item {
-        /* box-shadow: 0px 0px 7px 2px black; */
-        border: 2px solid black;
-        border-radius: 3px;
-        margin: 1%;
-        text-align: center;
-
-    }
-
-    .coordinate-items-container {
-        margin: 1%;
-        padding: 1%;
-        padding-top: 0%;
-        border-right: 3px solid black;
-        display: flex;
-        flex-direction: column;
-        width: 500px;
-        height: 100vh;
-        overflow-y: auto;
-    }
-
-    #map {
-        height: 500px;
-        width: 600px
-    }
-
-</style>
 
 <div x-data="{}" style="display: flex">
     <div class="coordinate-items-container">
@@ -42,9 +10,9 @@
             </div>
         {% endfor %}
     </div>
-
-    <div id="map"></div>
+    {% include 'tables/map.html' %}
 </div>
+
 {% autoescape off %}
 <script>
     var coordinates = { data: [
@@ -54,11 +22,9 @@
         ]
     }
 
-    var map = L.map('map').setView(coordinates.data[0], 13);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    map.setView(coordinates.data[0], 8)
+
     for (let coordinate of coordinates.data) {
         console.log("coor: ", coordinate)
         L.marker(coordinate).addTo(map)
@@ -66,7 +32,7 @@
 
     function onMapClick(e) {
         console.log(e)
-        map.setView(e.latlng, 5)
+        map.setView(e.latlng, 8)
     }
 
     map.on('click', onMapClick);
