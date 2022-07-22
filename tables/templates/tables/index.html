@@ -10,8 +10,10 @@
                 <h2>{{coordenate.address}}</h2>
             </div>
         {% endfor %}
+        <a style="text-align: center;" href="{% url 'search' %}">Search for tables in a specific radius</a>
     </div>
     {% include 'tables/map.html' %}
+    <a href="{% url 'add' %}" id="add-button">Add a new table</a>
 </div>
 
 {% autoescape off %}

@@ -34,3 +34,10 @@ strong {
     /* height: 100%; */
     width: 50%;
 }
+
+#add-button {
+    position: fixed;
+    bottom: 1%;
+    left: 1%;
+    z-index: 100;
+}
