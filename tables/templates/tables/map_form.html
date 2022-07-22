@@ -2,19 +2,21 @@
 <link rel="stylesheet" type="text/css" href="{% static 'tables/style.css' %}">
 <script src="//unpkg.com/alpinejs" defer></script>
 
-{% include 'tables/map.html' %}
-<form method="POST" x-data="{}" action="{% url 'index' %}" >
+
+<form method="POST" x-data="{}" action="{% url 'index' %}" class="coordinate-items-container">
     <input type="hidden" name="lat" x-bind:value="$store.coordinates.lat"></input>
     <input type="hidden" name="lng" x-bind:value="$store.coordinates.lng"></input>
     <input type="hidden" name="type" value="{{action_type}}"></input>
     {% if action_type == "search" %}
-        <input type="number" name="radius" value="50">Radius of search (km)</input>
+        <strong>Radius of search (km)</strong>
+        <input type="number" name="radius" value="50"></input>
     {% endif %}
-    <strong x-text="$store.coordinates.lng"></strong>
-    <strong x-text="$store.coordinates.lat"></strong>
+    <strong x-text="$store.coordinates.lng+' ,'+$store.coordinates.lat"></strong>
     <button type="submit">Submit</button>
     {% csrf_token %}
 </form>
+{% include 'tables/map.html' %}
+
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.store("coordinates", {
@@ -22,7 +24,7 @@
             lng: -3.74922
         })
     })
-
+    map.setView([40.463667, -3.74922], 8)
 
     var marker = L.marker([40.463667, -3.74922]).addTo(map)
     function onMapClick(e) {

@@ -6,7 +6,8 @@
     <div class="coordinate-items-container">
         {% for coordenate in coordinates %}
             <div @click="onMapClick({latlng: { lat: {{coordenate.lat}}, lng: {{coordenate.lng}} }})" class="coordinate-item">
-                <h2>{{coordenate.lat}}, {{coordenate.lng}}</h2>
+                <!-- <h2>{{coordenate.lat}}, {{coordenate.lng}}</h2> -->
+                <h2>{{coordenate.address}}</h2>
             </div>
         {% endfor %}
     </div>

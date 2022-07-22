@@ -3,3 +3,6 @@ Webpage
 map
 searchbar
 add
+
+convert lat/lng to km
+https://stackoverflow.com/questions/42673048/convert-latitude-longitude-to-distance-from-equator-in-kilometers-and-round-to
